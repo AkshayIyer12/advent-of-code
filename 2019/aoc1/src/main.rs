@@ -18,21 +18,23 @@ fn calculate_module_fuel(data: &String) -> i32 {
         })
 }
 
-fn calculate_fuel_for_fuel(data: &String) -> i32 {
+fn calculate_fuel_for_fuel(data: &String) -> f64 {
     data
         .lines()
-        .fold(0, |mut acc, x| {
-            acc += calculate_mod_fuel_recr(x.parse::<i32>().unwrap(), 0);
+        .fold(0.0, |mut acc, x| {
+            acc += calculate_mod_fuel_recr(x.parse::<f64>().unwrap(), 0.0);
             acc
         })
 }
 
 
-fn calculate_mod_fuel_recr(data: i32, mut accum: i32) -> i32 {
-    if data == 0 {
-        return accum;
+fn calculate_mod_fuel_recr(mut fuel: f64, mut accum: f64) -> f64 {
+    while fuel > 0.0 {
+        let data = fuel/3.0;
+        fuel = data.floor() - 2.0;
+        if fuel > 0.0 {
+            accum += fuel;
+        }
     }
-    let mod_fuel: i32 = (data/3) - 2;
-    accum += mod_fuel;
-    calculate_mod_fuel_recr(mod_fuel, accum)
+    accum
 }
